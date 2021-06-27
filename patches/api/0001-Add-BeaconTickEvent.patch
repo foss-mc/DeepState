@@ -1,0 +1,47 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Alexander <protonull@protonmail.com>
+Date: Sun, 27 Jun 2021 23:37:35 +0100
+Subject: [PATCH] Add BeaconTickEvent
+
+
+diff --git a/src/main/java/io/protonull/deepstate/event/block/BeaconTickEvent.java b/src/main/java/io/protonull/deepstate/event/block/BeaconTickEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..52155a5c8c5dba3c8a54a5f2cdf5389982d02eda
+--- /dev/null
++++ b/src/main/java/io/protonull/deepstate/event/block/BeaconTickEvent.java
+@@ -0,0 +1,34 @@
++package io.protonull.deepstate.event.block;
++
++import org.bukkit.block.Beacon;
++import org.bukkit.block.Block;
++import org.bukkit.event.HandlerList;
++import org.bukkit.event.block.BlockEvent;
++import org.jetbrains.annotations.NotNull;
++
++public class BeaconTickEvent extends BlockEvent {
++    private static final HandlerList handlers = new HandlerList();
++
++    public BeaconTickEvent(@NotNull Block block) {
++        super(block);
++    }
++
++    /**
++     * @return Returns the beacon that was ticked.
++     */
++    @NotNull
++    public Beacon getBeacon() {
++        return (Beacon) this.block.getState();
++    }
++
++    @NotNull
++    @Override
++    public HandlerList getHandlers() {
++        return handlers;
++    }
++
++    @NotNull
++    public static HandlerList getHandlerList() {
++        return handlers;
++    }
++}
+\ No newline at end of file
