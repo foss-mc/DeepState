@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Alexander <protonull@protonmail.com>
+Date: Sun, 27 Jun 2021 22:24:48 +0100
+Subject: [PATCH] Compilation fix
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index c2005f46b6cf2d7f80f65dc52f9ff7cd03d0419f..962dc9402fc34ecc8fc09800d47a01d0eda20293 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -30,7 +30,7 @@ repositories {
+ }
+ 
+ dependencies {
+-    implementation(project(":Tuinity-API")) // Tuinity
++    implementation(project(":DeepState-API")) // Tuinity
+     implementation("com.destroystokyo.paper:paper-mojangapi:1.16.5-R0.1-SNAPSHOT") // Tuinity
+     // Paper start
+     implementation("org.jline:jline-terminal-jansi:3.12.1")
