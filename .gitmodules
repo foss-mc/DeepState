@@ -1,0 +1,4 @@
+[submodule "Tuinity"]
+	path = Tuinity
+	url = https://github.com/Tuinity/Tuinity.git
+	branch = ver/1.17
