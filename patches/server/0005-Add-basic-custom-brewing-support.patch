@@ -1,0 +1,207 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Alexander <protonull@protonmail.com>
+Date: Mon, 28 Jun 2021 11:51:20 +0100
+Subject: [PATCH] Add basic custom brewing support
+
+
+diff --git a/src/main/java/net/minecraft/world/item/alchemy/PotionBrewing.java b/src/main/java/net/minecraft/world/item/alchemy/PotionBrewing.java
+index be686facff79c16c29f3e39b420f1e475db37fff..e43da3f291bdff2258505aa04935816e9aed0dd8 100644
+--- a/src/main/java/net/minecraft/world/item/alchemy/PotionBrewing.java
++++ b/src/main/java/net/minecraft/world/item/alchemy/PotionBrewing.java
+@@ -14,6 +14,7 @@ public class PotionBrewing {
+     public static final int BREWING_TIME_SECONDS = 20;
+     private static final List<PotionBrewing.Mix<Potion>> POTION_MIXES = Lists.newArrayList();
+     private static final List<PotionBrewing.Mix<Item>> CONTAINER_MIXES = Lists.newArrayList();
++    private static final List<PotionBrewing.Mix<ItemStack>> ITEM_MIXES = Lists.newArrayList(); // DeepState - add item recipes
+     private static final List<Ingredient> ALLOWED_CONTAINERS = Lists.newArrayList();
+     private static final Predicate<ItemStack> ALLOWED_CONTAINER = (stack) -> {
+         for(Ingredient ingredient : ALLOWED_CONTAINERS) {
+@@ -25,10 +26,27 @@ public class PotionBrewing {
+         return false;
+     };
+ 
++    // DeepState start - add javadoc
++    /**
++     * @param stack The item to check.
++     * @return Returns whether the given item is a valid ingredient for any recipe.
++     */
++    // DeepState end - add javadoc
+     public static boolean isIngredient(ItemStack stack) {
+-        return isContainerIngredient(stack) || isPotionIngredient(stack);
++        return isContainerIngredient(stack) || isPotionIngredient(stack) || INTERNAL_isItemIngredient(stack); // DeepState - add item recipes
+     }
+ 
++    // DeepState start - add item recipes
++    protected static boolean INTERNAL_isItemIngredient(ItemStack stack) {
++        for (final PotionBrewing.Mix<ItemStack> mix : ITEM_MIXES) {
++            if (mix.ingredient.test(stack)) {
++                return true;
++            }
++        }
++        return false;
++    }
++    // DeepState end - add item recipes
++
+     protected static boolean isContainerIngredient(ItemStack stack) {
+         int i = 0;
+ 
+@@ -53,6 +71,12 @@ public class PotionBrewing {
+         return false;
+     }
+ 
++    // DeepState start - add javadoc
++    /**
++     * @param potion The potion to check.
++     * @return Returns whether the given potion is can be brewed.
++     */
++    // DeepState end - add javadoc
+     public static boolean isBrewablePotion(Potion potion) {
+         int i = 0;
+ 
+@@ -65,11 +89,18 @@ public class PotionBrewing {
+         return false;
+     }
+ 
++    // DeepState start - add javadoc
++    /**
++     * @param input The bottles that get brewed into.
++     * @param ingredient The consumable ingredient.
++     * @return Returns whether the bottle and ingredient pair will actually brew.
++     */
++    // DeepState end - add javadoc
+     public static boolean hasMix(ItemStack input, ItemStack ingredient) {
+         if (!ALLOWED_CONTAINER.test(input)) {
+             return false;
+         } else {
+-            return hasContainerMix(input, ingredient) || hasPotionMix(input, ingredient);
++            return hasContainerMix(input, ingredient) || hasPotionMix(input, ingredient) || INTERNAL_hasItemMix(input, ingredient); // DeepState - add item recipes
+         }
+     }
+ 
+@@ -101,6 +132,24 @@ public class PotionBrewing {
+         return false;
+     }
+ 
++    // DeepState start - add item recipes
++    protected static boolean INTERNAL_hasItemMix(ItemStack input, ItemStack ingredient) {
++        for (final PotionBrewing.Mix<ItemStack> mix : ITEM_MIXES) {
++            if (mix.from.sameItem(input) && mix.ingredient.test(ingredient)) {
++                return true;
++            }
++        }
++        return false;
++    }
++    // DeepState end - add item recipes
++
++    // DeepState start - add javadoc
++    /**
++     * @param input The consumable ingredient.
++     * @param ingredient The bottles that get brewed into.
++     * @return Returns the result of the brewing process.
++     */
++    // DeepState end - add javadoc
+     public static ItemStack mix(ItemStack input, ItemStack ingredient) {
+         if (!ingredient.isEmpty()) {
+             Potion potion = PotionUtils.getPotion(ingredient);
+@@ -122,11 +171,24 @@ public class PotionBrewing {
+                     return PotionUtils.setPotion(new ItemStack(item), mix2.to);
+                 }
+             }
++
++            // DeepState start - add item recipes
++            for (final PotionBrewing.Mix<ItemStack> mix3 : ITEM_MIXES) {
++                if (mix3.from.sameItem(ingredient) && mix3.ingredient.test(input)) {
++                    return mix3.to.copy();
++                }
++            }
++            // DeepState end - add item recipes
+         }
+ 
+         return ingredient;
+     }
+ 
++    // DeepState start - add javadoc
++    /**
++     * Register all brewing recipes.
++     */
++    // DeepState end - add javadoc
+     public static void bootStrap() {
+         addContainer(Items.POTION);
+         addContainer(Items.SPLASH_POTION);
+@@ -223,4 +285,26 @@ public class PotionBrewing {
+             this.to = output;
+         }
+     }
++
++    // DeepState start - add item recipes
++    /**
++     * Registers a new brewing recipe.
++     *
++     * @param input The input bottles (the bottom three slots that are transformed on successful brewing)
++     * @param ingredient The ingredient that will be consumed.
++     * @param output What the input bottles will be transformed into upon successful brewing.
++     */
++    public static void registerItemMix(final ItemStack input,
++                                       final ItemStack ingredient,
++                                       final ItemStack output) {
++        if (!PotionUtils.isPotionItem(input.getItem())) {
++            throw new IllegalArgumentException("Expected a potion, got: " + input);
++        }
++        if (!PotionUtils.isPotionItem(output.getItem())) {
++            throw new IllegalArgumentException("Expected a potion, got: " + output);
++        }
++        ITEM_MIXES.add(new PotionBrewing.Mix<>(input, Ingredient.of(ingredient), output));
++    }
++    // DeepState end - add item recipes
++
+ }
+diff --git a/src/main/java/net/minecraft/world/item/alchemy/PotionUtils.java b/src/main/java/net/minecraft/world/item/alchemy/PotionUtils.java
+index 3d9fffa3f07264743b9323557a0b2ac360e01fb9..0333c545fa978cb5dee73a44903c359ef943bc88 100644
+--- a/src/main/java/net/minecraft/world/item/alchemy/PotionUtils.java
++++ b/src/main/java/net/minecraft/world/item/alchemy/PotionUtils.java
+@@ -22,6 +22,11 @@ import net.minecraft.world.effect.MobEffectUtil;
+ import net.minecraft.world.entity.ai.attributes.Attribute;
+ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+ import net.minecraft.world.item.ItemStack;
++// DeepState start
++import javax.annotation.Nonnull;
++import net.minecraft.world.item.Item;
++import net.minecraft.world.item.Items;
++// DeepState end
+ 
+ public class PotionUtils {
+     public static final String TAG_CUSTOM_POTION_EFFECTS = "CustomPotionEffects";
+@@ -207,4 +212,33 @@ public class PotionUtils {
+         }
+ 
+     }
++
++    // DeepState start
++    /**
++     * @param item The item to check.
++     * @return Returns whether the given item is a valid potion type.
++     */
++    public static boolean isPotionItem(final Item item) {
++        return item == Items.POTION
++                || item == Items.SPLASH_POTION
++                || item == Items.LINGERING_POTION;
++    }
++    // DeepState end
++
++    // DeepState start
++    /**
++     * Creates a new potion item stack based on the given item and potion types.
++     *
++     * @param item The item type, can be any type, but will return a water bottle if null or not a potion type.
++     * @param potion The potion type, can be null, but will return a water bottle if null.
++     * @return Returns a new potion item stack, which is never null.
++     */
++    @Nonnull
++    public static ItemStack createPotionItem(final Item item, final Potion potion) {
++        return !isPotionItem(item) || potion == null ?
++                setPotion(Items.POTION.getDefaultInstance(), Potions.WATER) :
++                setPotion(item.getDefaultInstance(), potion);
++    }
++    // DeepState end
++
+ }

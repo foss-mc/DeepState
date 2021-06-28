@@ -10,3 +10,6 @@
 #     minecraft net/minecraft/world/level/entity/LevelEntityGetter.java
 
 authlib com.mojang.authlib.GameProfile
+
+minecraft net.minecraft.world.item.alchemy.PotionBrewing
+minecraft net.minecraft.world.item.alchemy.PotionUtils
