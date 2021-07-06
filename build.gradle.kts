@@ -1,16 +1,18 @@
+import io.papermc.paperweight.util.Constants
+
 plugins {
     java
     id("com.github.johnrengelman.shadow") version "7.0.0" apply false
-    id("io.papermc.paperweight.patcher") version "1.1.6"
+    id("io.papermc.paperweight.patcher") version "1.1.8"
 }
 
 repositories {
     mavenCentral()
     maven("https://papermc.io/repo/repository/maven-public/") {
-        content { onlyForConfigurations("paperclip") }
+        content { onlyForConfigurations(Constants.PAPERCLIP_CONFIG) }
     }
     maven("https://maven.quiltmc.org/repository/release/") {
-        content { onlyForConfigurations("remapper") }
+        content { onlyForConfigurations(Constants.REMAPPER_CONFIG) }
     }
 }
 
@@ -25,7 +27,7 @@ subprojects {
     java { toolchain { languageVersion.set(JavaLanguageVersion.of(16)) } }
 
     tasks.withType<JavaCompile>().configureEach {
-        options.encoding = "UTF-8"
+        options.encoding = Charsets.UTF_8.name()
         options.release.set(16)
     }
 
