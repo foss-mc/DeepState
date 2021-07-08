@@ -5,10 +5,10 @@ Subject: [PATCH] Compilation fix
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index c2005f46b6cf2d7f80f65dc52f9ff7cd03d0419f..9586b1fb41457105e7bfc0442155940246fb157f 100644
+index ab8de6c4e3c0bea2b9f498da00adf88e987d2364..80096c0ad2920a8c4ea6f6c963a5eea5c9cc6d00 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -30,7 +30,7 @@ repositories {
+@@ -36,7 +36,7 @@ repositories {
  }
  
  dependencies {
