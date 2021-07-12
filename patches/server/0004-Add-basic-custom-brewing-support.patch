@@ -5,7 +5,7 @@ Subject: [PATCH] Add basic custom brewing support
 
 
 diff --git a/src/main/java/net/minecraft/world/item/alchemy/PotionBrewing.java b/src/main/java/net/minecraft/world/item/alchemy/PotionBrewing.java
-index be686facff79c16c29f3e39b420f1e475db37fff..e43da3f291bdff2258505aa04935816e9aed0dd8 100644
+index be686facff79c16c29f3e39b420f1e475db37fff..96dd4d34ec1583daa0407ab10c9c70a6e3b157b7 100644
 --- a/src/main/java/net/minecraft/world/item/alchemy/PotionBrewing.java
 +++ b/src/main/java/net/minecraft/world/item/alchemy/PotionBrewing.java
 @@ -14,6 +14,7 @@ public class PotionBrewing {
@@ -128,6 +128,33 @@ index be686facff79c16c29f3e39b420f1e475db37fff..e43da3f291bdff2258505aa04935816e
      public static void bootStrap() {
          addContainer(Items.POTION);
          addContainer(Items.SPLASH_POTION);
+@@ -190,7 +252,7 @@ public class PotionBrewing {
+         addMix(Potions.SLOW_FALLING, Items.REDSTONE, Potions.LONG_SLOW_FALLING);
+     }
+ 
+-    private static void addContainerRecipe(Item input, Item ingredient, Item output) {
++    public static void addContainerRecipe(Item input, Item ingredient, Item output) { // DeepState - make public
+         if (!(input instanceof PotionItem)) {
+             throw new IllegalArgumentException("Expected a potion, got: " + Registry.ITEM.getKey(input));
+         } else if (!(output instanceof PotionItem)) {
+@@ -200,7 +262,7 @@ public class PotionBrewing {
+         }
+     }
+ 
+-    private static void addContainer(Item item) {
++	public static void addContainer(Item item) { // DeepState - make public
+         if (!(item instanceof PotionItem)) {
+             throw new IllegalArgumentException("Expected a potion, got: " + Registry.ITEM.getKey(item));
+         } else {
+@@ -208,7 +270,7 @@ public class PotionBrewing {
+         }
+     }
+ 
+-    private static void addMix(Potion input, Item item, Potion output) {
++	public static void addMix(Potion input, Item item, Potion output) { // DeepState - make public
+         POTION_MIXES.add(new PotionBrewing.Mix<>(input, Ingredient.of(item), output));
+     }
+ 
 @@ -223,4 +285,26 @@ public class PotionBrewing {
              this.to = output;
          }
@@ -141,9 +168,9 @@ index be686facff79c16c29f3e39b420f1e475db37fff..e43da3f291bdff2258505aa04935816e
 +     * @param ingredient The ingredient that will be consumed.
 +     * @param output What the input bottles will be transformed into upon successful brewing.
 +     */
-+    public static void registerItemMix(final ItemStack input,
-+                                       final ItemStack ingredient,
-+                                       final ItemStack output) {
++    public static void addItemRecipe(final ItemStack input,
++									 final ItemStack ingredient,
++									 final ItemStack output) {
 +        if (!PotionUtils.isPotionItem(input.getItem())) {
 +            throw new IllegalArgumentException("Expected a potion, got: " + input);
 +        }

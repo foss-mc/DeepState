@@ -6,7 +6,7 @@ Subject: [PATCH] Add PhantomPreSpawnClusterEvent
 
 diff --git a/src/main/java/io/protonull/deepstate/event/entity/PhantomPreSpawnClusterEvent.java b/src/main/java/io/protonull/deepstate/event/entity/PhantomPreSpawnClusterEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..d35144f7ed6d3a9bb603608a61ac4fea6b50ae27
+index 0000000000000000000000000000000000000000..95d9db7263704d5f6076f0e2c3eb86920e55b8be
 --- /dev/null
 +++ b/src/main/java/io/protonull/deepstate/event/entity/PhantomPreSpawnClusterEvent.java
 @@ -0,0 +1,42 @@
@@ -18,9 +18,9 @@ index 0000000000000000000000000000000000000000..d35144f7ed6d3a9bb603608a61ac4fea
 +import org.jetbrains.annotations.NotNull;
 +
 +public class PhantomPreSpawnClusterEvent extends PlayerEvent {
-+    private static final HandlerList handlers = new HandlerList();
++	private static final HandlerList handlers = new HandlerList();
 +
-+    private int clusterCount;
++	private int clusterCount;
 +
 +	public PhantomPreSpawnClusterEvent(@NotNull final Player target, final int clusterCount) {
 +		super(target);
@@ -42,13 +42,13 @@ index 0000000000000000000000000000000000000000..d35144f7ed6d3a9bb603608a61ac4fea
 +	}
 +
 +	@NotNull
-+    @Override
-+    public HandlerList getHandlers() {
-+        return handlers;
-+    }
++	@Override
++	public HandlerList getHandlers() {
++		return handlers;
++	}
 +
-+    @NotNull
-+    public static HandlerList getHandlerList() {
-+        return handlers;
-+    }
++	@NotNull
++	public static HandlerList getHandlerList() {
++		return handlers;
++	}
 +}

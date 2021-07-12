@@ -5,7 +5,7 @@ Subject: [PATCH] Emit BeaconTickEvent
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/BeaconBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/BeaconBlockEntity.java
-index 3281448bf37da8a1b4b7b44f10f4b2438b4a4f29..33f615a4f506061572bbceb9e10912bf232c77c3 100644
+index 3281448bf37da8a1b4b7b44f10f4b2438b4a4f29..ea63eee7c151b8e0ecdc63ae899eda182acedc74 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/BeaconBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/BeaconBlockEntity.java
 @@ -204,6 +204,8 @@ public class BeaconBlockEntity extends BlockEntity implements MenuProvider {
@@ -13,7 +13,7 @@ index 3281448bf37da8a1b4b7b44f10f4b2438b4a4f29..33f615a4f506061572bbceb9e10912bf
                  BeaconBlockEntity.applyEffects(world, pos, blockEntity.levels, blockEntity.primaryPower, blockEntity.secondaryPower, blockEntity); // Paper
                  BeaconBlockEntity.playSound(world, pos, SoundEvents.BEACON_AMBIENT);
 +
-+                new io.protonull.deepstate.event.block.BeaconTickEvent(org.bukkit.craftbukkit.block.CraftBlock.at(world, pos)).callEvent();
++                new io.protonull.deepstate.event.block.BeaconTickEvent(org.bukkit.craftbukkit.block.CraftBlock.at(world, pos)).callEvent(); // DeepState
              }
          }
          // Paper start - beacon activation/deactivation events
