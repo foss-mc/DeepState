@@ -6,14 +6,14 @@ Subject: [PATCH] Emit PhantomPreSpawnClusterEvent to make cluster size
 
 
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/PhantomSpawner.java b/src/main/java/net/minecraft/world/level/levelgen/PhantomSpawner.java
-index 79504dc3448402e73b09c4232b1fd0488872cf68..deca721e52f0ad4f1b13f176461091fcd8ae070c 100644
+index 79504dc3448402e73b09c4232b1fd0488872cf68..138267f81300fda2cd93f60ef1303e9d8dc57fcb 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/PhantomSpawner.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/PhantomSpawner.java
 @@ -73,6 +73,10 @@ public class PhantomSpawner implements CustomSpawner {
                                              SpawnGroupData groupdataentity = null;
                                              int k = 1 + random.nextInt(difficultydamagescaler.getDifficulty().getId() + 1);
  
-+                                            final var clusterEvent = new io.protonull.deepstate.event.entity.PhantomPreSpawnClusterEvent(((ServerPlayer) entityhuman).getBukkitEntity(), k);
++                                            final var clusterEvent = new io.protonull.deepstate.event.entity.PhantomPreSpawnClusterEvent(((ServerPlayer) entityhuman).getBukkitEntity(), k, j);
 +                                            clusterEvent.callEvent();
 +                                            k = clusterEvent.getClusterCount();
 +

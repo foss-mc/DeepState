@@ -6,10 +6,10 @@ Subject: [PATCH] Add PhantomPreSpawnClusterEvent
 
 diff --git a/src/main/java/io/protonull/deepstate/event/entity/PhantomPreSpawnClusterEvent.java b/src/main/java/io/protonull/deepstate/event/entity/PhantomPreSpawnClusterEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..95d9db7263704d5f6076f0e2c3eb86920e55b8be
+index 0000000000000000000000000000000000000000..f2e885a3e6c52235faa45b104d7752080f24c9f1
 --- /dev/null
 +++ b/src/main/java/io/protonull/deepstate/event/entity/PhantomPreSpawnClusterEvent.java
-@@ -0,0 +1,42 @@
+@@ -0,0 +1,51 @@
 +package io.protonull.deepstate.event.entity;
 +
 +import org.bukkit.entity.Player;
@@ -21,10 +21,12 @@ index 0000000000000000000000000000000000000000..95d9db7263704d5f6076f0e2c3eb8692
 +	private static final HandlerList handlers = new HandlerList();
 +
 +	private int clusterCount;
++	private final int timeSinceRest;
 +
-+	public PhantomPreSpawnClusterEvent(@NotNull final Player target, final int clusterCount) {
++	public PhantomPreSpawnClusterEvent(@NotNull final Player target, final int clusterCount, final int timeSinceRest) {
 +		super(target);
 +		this.clusterCount = clusterCount;
++		this.timeSinceRest = timeSinceRest;
 +	}
 +
 +	/**
@@ -39,6 +41,13 @@ index 0000000000000000000000000000000000000000..95d9db7263704d5f6076f0e2c3eb8692
 +	 */
 +	public void setClusterCount(final int clusterCount) {
 +		this.clusterCount = clusterCount;
++	}
++
++	/**
++	 * @return Returns the target player's time since rest statistic's value.
++	 */
++	public int getTimeSinceRest() {
++		return this.timeSinceRest;
 +	}
 +
 +	@NotNull
