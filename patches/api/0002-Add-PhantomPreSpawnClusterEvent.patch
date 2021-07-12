@@ -1,0 +1,54 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Alexander <protonull@protonmail.com>
+Date: Mon, 12 Jul 2021 08:50:38 +0100
+Subject: [PATCH] Add PhantomPreSpawnClusterEvent
+
+
+diff --git a/src/main/java/io/protonull/deepstate/event/entity/PhantomPreSpawnClusterEvent.java b/src/main/java/io/protonull/deepstate/event/entity/PhantomPreSpawnClusterEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..d35144f7ed6d3a9bb603608a61ac4fea6b50ae27
+--- /dev/null
++++ b/src/main/java/io/protonull/deepstate/event/entity/PhantomPreSpawnClusterEvent.java
+@@ -0,0 +1,42 @@
++package io.protonull.deepstate.event.entity;
++
++import org.bukkit.entity.Player;
++import org.bukkit.event.HandlerList;
++import org.bukkit.event.player.PlayerEvent;
++import org.jetbrains.annotations.NotNull;
++
++public class PhantomPreSpawnClusterEvent extends PlayerEvent {
++    private static final HandlerList handlers = new HandlerList();
++
++    private int clusterCount;
++
++	public PhantomPreSpawnClusterEvent(@NotNull final Player target, final int clusterCount) {
++		super(target);
++		this.clusterCount = clusterCount;
++	}
++
++	/**
++	 * @return Returns how many phantoms will be spawned on the target player.
++	 */
++	public int getClusterCount() {
++		return Math.max(this.clusterCount, 0);
++	}
++
++	/**
++	 * @param clusterCount Sets how many phantoms will be spawned on the target player.
++	 */
++	public void setClusterCount(final int clusterCount) {
++		this.clusterCount = clusterCount;
++	}
++
++	@NotNull
++    @Override
++    public HandlerList getHandlers() {
++        return handlers;
++    }
++
++    @NotNull
++    public static HandlerList getHandlerList() {
++        return handlers;
++    }
++}
