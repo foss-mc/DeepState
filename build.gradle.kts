@@ -24,7 +24,11 @@ dependencies {
 subprojects {
     apply(plugin = "java")
 
-    java { toolchain { languageVersion.set(JavaLanguageVersion.of(16)) } }
+    java {
+		toolchain {
+			languageVersion.set(JavaLanguageVersion.of(16))
+		}
+    }
 
     tasks.withType<JavaCompile>().configureEach {
         options.encoding = Charsets.UTF_8.name()
@@ -53,8 +57,11 @@ paperweight {
         withStandardPatcher {
             baseName("Tuinity")
 
-            apiOutputDir.set(layout.projectDirectory.dir("DeepState-API"))
-            serverOutputDir.set(layout.projectDirectory.dir("DeepState-Server"))
+			apiPatchDir.set(layout.projectDirectory.dir("patches/api"))
+			apiOutputDir.set(layout.projectDirectory.dir("DeepState-API"))
+
+			serverPatchDir.set(layout.projectDirectory.dir("patches/server"))
+			serverOutputDir.set(layout.projectDirectory.dir("DeepState-Server"))
         }
     }
 }
