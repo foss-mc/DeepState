@@ -5,9 +5,20 @@ Subject: [PATCH] Compilation fix
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index ab8de6c4e3c0bea2b9f498da00adf88e987d2364..80096c0ad2920a8c4ea6f6c963a5eea5c9cc6d00 100644
+index ab8de6c4e3c0bea2b9f498da00adf88e987d2364..f3e1c2dccdeb178f2b188c405b60965cb3ce5d29 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
+@@ -3,9 +3,9 @@ import com.github.jengelman.gradle.plugins.shadow.transformers.Transformer
+ import io.papermc.paperweight.tasks.BaseTask
+ import io.papermc.paperweight.tasks.GenerateReobfMappings
+ import io.papermc.paperweight.tasks.PatchMappings
+-import io.papermc.paperweight.util.Constants
+ import io.papermc.paperweight.util.Git
+ import io.papermc.paperweight.util.cache
++import io.papermc.paperweight.util.constants.*
+ import io.papermc.paperweight.util.defaultOutput
+ import io.papermc.paperweight.util.openZip
+ import io.papermc.paperweight.util.path
 @@ -36,7 +36,7 @@ repositories {
  }
  
@@ -17,3 +28,14 @@ index ab8de6c4e3c0bea2b9f498da00adf88e987d2364..80096c0ad2920a8c4ea6f6c963a5eea5
      implementation("com.destroystokyo.paper:paper-mojangapi:1.16.5-R0.1-SNAPSHOT") // Tuinity
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
+@@ -119,8 +119,8 @@ val patchReobfMappings by tasks.registering<PatchMappings> {
+     inputMappings.set(generateReobfMappings.flatMap { it.reobfMappings })
+     patch.set(rootProject.layout.cache.resolve("paperweight/upstreams/paper/build-data/reobf-mappings-patch.tiny"))
+ 
+-    fromNamespace.set(Constants.DEOBF_NAMESPACE)
+-    toNamespace.set(Constants.SPIGOT_NAMESPACE)
++    fromNamespace.set(DEOBF_NAMESPACE)
++    toNamespace.set(SPIGOT_NAMESPACE)
+ 
+     outputMappings.set(layout.cache.resolve("paperweight/mappings/reobf-patched.tiny"))
+ }
