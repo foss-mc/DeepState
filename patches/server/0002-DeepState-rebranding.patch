@@ -4,6 +4,19 @@ Date: Sun, 27 Jun 2021 22:33:30 +0100
 Subject: [PATCH] DeepState rebranding
 
 
+diff --git a/build.gradle.kts b/build.gradle.kts
+index f3e1c2dccdeb178f2b188c405b60965cb3ce5d29..24391dc9184a14fa38540c0269553d5b28b93994 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -88,7 +88,7 @@ tasks.jar {
+         attributes(
+             "Main-Class" to "org.bukkit.craftbukkit.Main",
+             "Implementation-Title" to "CraftBukkit",
+-            "Implementation-Version" to "git-Tuinity-$implementationVersion", // Tuinity
++            "Implementation-Version" to "git-DeepState-$implementationVersion", // DeepState
+             "Implementation-Vendor" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date()), // Paper
+             "Specification-Title" to "Bukkit",
+             "Specification-Version" to project.version,
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 index d50b61876f15d95b836b3dd81d9c3492c91a8448..96d7fab310ff2a5cd11d670ffbeabc22b2a773fe 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
