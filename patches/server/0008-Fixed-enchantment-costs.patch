@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Alexander <protonull@protonmail.com>
+Date: Fri, 16 Jul 2021 22:07:46 +0100
+Subject: [PATCH] Fixed enchantment costs
+
+
+diff --git a/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java b/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java
+index 717b101bd2492037a9ca1d65d8cb3cebb7d6d4fe..916804e290573c70aa5cac3d2a07e4b405e0cc50 100644
+--- a/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java
++++ b/src/main/java/net/minecraft/world/inventory/EnchantmentMenu.java
+@@ -296,7 +296,7 @@ public class EnchantmentMenu extends AbstractContainerMenu {
+                         }
+                     }
+ 
+-                    player.onEnchantmentPerformed(itemstack, j);
++                    player.onEnchantmentPerformed(itemstack, level); // DeepState - make enchantments cost set levels
+                     // CraftBukkit end
+ 
+                     // CraftBukkit - TODO: let plugins change this
