@@ -5,7 +5,7 @@ Subject: [PATCH] Compilation fix
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index ab8de6c4e3c0bea2b9f498da00adf88e987d2364..f3e1c2dccdeb178f2b188c405b60965cb3ce5d29 100644
+index 8ccb5183af4a10a92d17570833e21dfffb5b03ea..124424cf437ca50609c13ad8ac3ef1dff068799e 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -3,9 +3,9 @@ import com.github.jengelman.gradle.plugins.shadow.transformers.Transformer
@@ -28,7 +28,7 @@ index ab8de6c4e3c0bea2b9f498da00adf88e987d2364..f3e1c2dccdeb178f2b188c405b60965c
      implementation("com.destroystokyo.paper:paper-mojangapi:1.16.5-R0.1-SNAPSHOT") // Tuinity
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
-@@ -119,8 +119,8 @@ val patchReobfMappings by tasks.registering<PatchMappings> {
+@@ -118,8 +118,8 @@ val patchReobfMappings by tasks.registering<PatchMappings> {
      inputMappings.set(generateReobfMappings.flatMap { it.reobfMappings })
      patch.set(rootProject.layout.cache.resolve("paperweight/upstreams/paper/build-data/reobf-mappings-patch.tiny"))
  
