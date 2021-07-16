@@ -5,7 +5,7 @@ Subject: [PATCH] Add public constructor to CraftItemStack
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
-index b3acc23d54c593b599517a481ad6ac86e5661fa2..a63f4cec6c9e7363cf88776af815363b0d600022 100644
+index b3acc23d54c593b599517a481ad6ac86e5661fa2..0f1d4b7a2ecddf197f70273bf548d5c986a434fd 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
 @@ -17,6 +17,11 @@ import org.bukkit.enchantments.Enchantment;
@@ -26,9 +26,9 @@ index b3acc23d54c593b599517a481ad6ac86e5661fa2..a63f4cec6c9e7363cf88776af815363b
  
 +    // DeepState start
 +    public CraftItemStack(@Nonnull final Material type, final int amount) {
-+    	this(Objects.requireNonNull(type), amount, (short) 0, Bukkit.getItemFactory().getItemMeta(type));
-+	}
-+	// DeepState end
++        this(Objects.requireNonNull(type), amount, (short) 0, Bukkit.getItemFactory().getItemMeta(type));
++    }
++    // DeepState end
 +
      @Override
      public MaterialData getData() {

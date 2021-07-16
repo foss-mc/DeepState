@@ -5,7 +5,7 @@ Subject: [PATCH] Add basic custom brewing support
 
 
 diff --git a/src/main/java/net/minecraft/world/item/alchemy/PotionBrewing.java b/src/main/java/net/minecraft/world/item/alchemy/PotionBrewing.java
-index be686facff79c16c29f3e39b420f1e475db37fff..96dd4d34ec1583daa0407ab10c9c70a6e3b157b7 100644
+index be686facff79c16c29f3e39b420f1e475db37fff..49b9e8465a43f8466a6c13da359ff5ea3be75fa3 100644
 --- a/src/main/java/net/minecraft/world/item/alchemy/PotionBrewing.java
 +++ b/src/main/java/net/minecraft/world/item/alchemy/PotionBrewing.java
 @@ -14,6 +14,7 @@ public class PotionBrewing {
@@ -142,7 +142,7 @@ index be686facff79c16c29f3e39b420f1e475db37fff..96dd4d34ec1583daa0407ab10c9c70a6
      }
  
 -    private static void addContainer(Item item) {
-+	public static void addContainer(Item item) { // DeepState - make public
++    public static void addContainer(Item item) { // DeepState - make public
          if (!(item instanceof PotionItem)) {
              throw new IllegalArgumentException("Expected a potion, got: " + Registry.ITEM.getKey(item));
          } else {
@@ -151,7 +151,7 @@ index be686facff79c16c29f3e39b420f1e475db37fff..96dd4d34ec1583daa0407ab10c9c70a6
      }
  
 -    private static void addMix(Potion input, Item item, Potion output) {
-+	public static void addMix(Potion input, Item item, Potion output) { // DeepState - make public
++    public static void addMix(Potion input, Item item, Potion output) { // DeepState - make public
          POTION_MIXES.add(new PotionBrewing.Mix<>(input, Ingredient.of(item), output));
      }
  

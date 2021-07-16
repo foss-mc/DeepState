@@ -5,7 +5,7 @@ Subject: [PATCH] Add world UUID caching to Location
 
 
 diff --git a/src/main/java/org/bukkit/Location.java b/src/main/java/org/bukkit/Location.java
-index c9b953aa55eeee87e81b9b712c0f501a58e641fb..15731642089e8ccfa1e3332a8672e7706ddd88a8 100644
+index c9b953aa55eeee87e81b9b712c0f501a58e641fb..2e0b8421246e591dad9f3efcecc49bc38a5577a7 100644
 --- a/src/main/java/org/bukkit/Location.java
 +++ b/src/main/java/org/bukkit/Location.java
 @@ -22,6 +22,10 @@ import org.bukkit.entity.LivingEntity;
@@ -31,14 +31,14 @@ index c9b953aa55eeee87e81b9b712c0f501a58e641fb..15731642089e8ccfa1e3332a8672e770
       * @param pitch The absolute rotation on the y-plane, in degrees
       */
      public Location(@UndefinedNullability final World world, final double x, final double y, final double z, final float yaw, final float pitch) {
-+		// DeepState start
-+    	/*
++        // DeepState start
++        /*
          if (world != null) {
              this.world = new WeakReference<>(world);
          }
 +         */
-+		setWorld(world);
-+		// DeepState end
++        setWorld(world);
++        // DeepState end
  
          this.x = x;
          this.y = y;
@@ -56,14 +56,14 @@ index c9b953aa55eeee87e81b9b712c0f501a58e641fb..15731642089e8ccfa1e3332a8672e770
  
 +    // DeeState start
 +    /**
-+	 * @return Returns this world's uuid, which can be null. Please do not construe a non-null value as implying that
-+	 *         the world is loaded, use {@link #isWorldLoaded()} for that information.
-+	 */
++     * @return Returns this world's uuid, which can be null. Please do not construe a non-null value as implying that
++     *         the world is loaded, use {@link #isWorldLoaded()} for that information.
++     */
 +    @Nullable
 +    public UUID getWorldUUID() {
-+    	return this.worldUUID;
-+	}
-+	// DeeState end
++        return this.worldUUID;
++    }
++    // DeeState end
 +
      /**
       * Gets the chunk at the represented location
