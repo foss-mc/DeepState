@@ -1,0 +1,329 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Alexander <protonull@protonmail.com>
+Date: Fri, 16 Jul 2021 18:59:27 +0100
+Subject: [PATCH] NBT Upgrades
+
+
+diff --git a/src/main/java/net/minecraft/nbt/CompoundTag.java b/src/main/java/net/minecraft/nbt/CompoundTag.java
+index 7199be3b9c00c66f452e92ad35795017112f1658..f430e38da0141c1eb78ac49024a3e0a80471913f 100644
+--- a/src/main/java/net/minecraft/nbt/CompoundTag.java
++++ b/src/main/java/net/minecraft/nbt/CompoundTag.java
+@@ -17,6 +17,10 @@ import javax.annotation.Nullable;
+ import net.minecraft.CrashReport;
+ import net.minecraft.CrashReportCategory;
+ import net.minecraft.ReportedException;
++// DeepState start
++import com.google.common.base.Preconditions;
++import javax.annotation.Nonnull;
++// DeepState end
+ 
+ public class CompoundTag implements Tag {
+     public static final Codec<CompoundTag> CODEC = Codec.PASSTHROUGH.comapFlatMap((dynamic) -> {
+@@ -62,8 +66,8 @@ public class CompoundTag implements Tag {
+     };
+     public final Map<String, Tag> tags; // Paper
+ 
+-    protected CompoundTag(Map<String, Tag> entries) {
+-        this.tags = entries;
++    public CompoundTag(@Nonnull final Map<String, Tag> entries) { // DeepState - made public
++        this.tags = Objects.requireNonNull(entries);
+     }
+ 
+     public CompoundTag() {
+@@ -103,6 +107,16 @@ public class CompoundTag implements Tag {
+         return this.tags.put(key, element);
+     }
+ 
++    // DeepState start
++	public void putCompoundArray(@Nonnull final String key, @Nonnull final CompoundTag[] compounds) {
++		Preconditions.checkNotNull(key);
++		Preconditions.checkNotNull(compounds);
++		final ListTag list = new ListTag();
++		list.addAll(List.of(compounds));
++		put(key, list);
++	}
++	// DeepState end
++
+     public void putByte(String key, byte value) {
+         this.tags.put(key, ByteTag.valueOf(value));
+     }
+@@ -111,6 +125,27 @@ public class CompoundTag implements Tag {
+         this.tags.put(key, ShortTag.valueOf(value));
+     }
+ 
++    // DeepState start
++	public void putShortArray(@Nonnull final String key, @Nonnull final short[] shorts) {
++		Preconditions.checkNotNull(key);
++		Preconditions.checkNotNull(shorts);
++		final ListTag list = new ListTag();
++		for (final short value : shorts) {
++			list.add(ShortTag.valueOf(value));
++		}
++		put(key, list);
++	}
++	public void putShortArray(@Nonnull final String key, @Nonnull final List<Short> shorts) {
++		Preconditions.checkNotNull(key);
++		Preconditions.checkNotNull(shorts);
++		final ListTag list = new ListTag();
++		for (final short value : shorts) {
++			list.add(ShortTag.valueOf(value));
++		}
++		put(key, list);
++	}
++	// DeepState end
++
+     public void putInt(String key, int value) {
+         this.tags.put(key, IntTag.valueOf(value));
+     }
+@@ -152,18 +187,86 @@ public class CompoundTag implements Tag {
+         return tag != null && tag.getType() == IntArrayTag.TYPE && ((IntArrayTag)tag).getAsIntArray().length == 4;
+     }
+ 
++    // DeepState start
++    public void removeUUID(@Nonnull final String key) {
++		Preconditions.checkNotNull(key);
++		remove(key);
++		remove(key + "Most");
++		remove(key + "Least");
++	}
++	public void putUUIDArray(@Nonnull final String key, @Nonnull final UUID[] uuids) {
++		Preconditions.checkNotNull(key);
++		Preconditions.checkNotNull(uuids);
++		final ListTag list = new ListTag();
++		List.of(uuids).forEach((uuid) -> list.add(NbtUtils.createUUID(uuid)));
++		put(key, list);
++	}
++	// DeepState end
++
+     public void putFloat(String key, float value) {
+         this.tags.put(key, FloatTag.valueOf(value));
+     }
+ 
++    // DeepState start
++	public void putFloatArray(@Nonnull final String key, @Nonnull final float[] floats) {
++		Preconditions.checkNotNull(key);
++		Preconditions.checkNotNull(floats);
++		final ListTag list = new ListTag();
++		for (final float value : floats) {
++			list.add(FloatTag.valueOf(value));
++		}
++		put(key, list);
++	}
++	public void putFloatArray(@Nonnull final String key, @Nonnull final List<Float> floats) {
++		Preconditions.checkNotNull(key);
++		Preconditions.checkNotNull(floats);
++		final ListTag list = new ListTag();
++		for (final float value : floats) {
++			list.add(FloatTag.valueOf(value));
++		}
++		put(key, list);
++	}
++	// DeepState end
++
+     public void putDouble(String key, double value) {
+         this.tags.put(key, DoubleTag.valueOf(value));
+     }
+ 
++	// DeepState start
++	public void putDoubleArray(@Nonnull final String key, @Nonnull final double[] doubles) {
++		Preconditions.checkNotNull(key);
++		Preconditions.checkNotNull(doubles);
++		final ListTag list = new ListTag();
++		for (final double value : doubles) {
++			list.add(DoubleTag.valueOf(value));
++		}
++		put(key, list);
++	}
++	public void putDoubleArray(@Nonnull final String key, @Nonnull final List<Double> doubles) {
++		Preconditions.checkNotNull(key);
++		Preconditions.checkNotNull(doubles);
++		final ListTag list = new ListTag();
++		for (final double value : doubles) {
++			list.add(DoubleTag.valueOf(value));
++		}
++		put(key, list);
++	}
++	// DeepState end
++
+     public void putString(String key, String value) {
+         this.tags.put(key, StringTag.valueOf(value));
+     }
+ 
++	// DeepState start
++	public void putStringArray(@Nonnull final String key, @Nonnull final String[] strings) {
++		Preconditions.checkNotNull(key);
++		Preconditions.checkNotNull(strings);
++		final ListTag list = new ListTag();
++		List.of(strings).forEach((string) -> list.add(StringTag.valueOf(string)));
++		put(key, list);
++	}
++	// DeepState end
++
+     public void putByteArray(String key, byte[] value) {
+         this.tags.put(key, new ByteArrayTag(value));
+     }
+@@ -192,6 +295,27 @@ public class CompoundTag implements Tag {
+         this.tags.put(key, ByteTag.valueOf(value));
+     }
+ 
++	// DeepState start
++	public void putBooleanArray(@Nonnull final String key, @Nonnull final boolean[] booleans) {
++		Preconditions.checkNotNull(key);
++		Preconditions.checkNotNull(booleans);
++		final byte[] converted = new byte[booleans.length];
++		for (int i = 0; i < converted.length; i++) {
++			converted[i] = (byte) (booleans[i] ? 0x1 : 0x0);
++		}
++		putByteArray(key, converted);
++	}
++	public void putBooleanArray(@Nonnull final String key, @Nonnull final List<Boolean> booleans) {
++		Preconditions.checkNotNull(key);
++		Preconditions.checkNotNull(booleans);
++		final byte[] converted = new byte[booleans.size()];
++		for (int i = 0; i < converted.length; i++) {
++			converted[i] = (byte) (booleans.get(i) ? 0x1 : 0x0);
++		}
++		putByteArray(key, converted);
++	}
++	// DeepState end
++
+     @Nullable
+     public Tag get(String key) {
+         return this.tags.get(key);
+@@ -294,6 +418,29 @@ public class CompoundTag implements Tag {
+         return "";
+     }
+ 
++	// DeepState start
++	@Nonnull
++	public String[] getStringArray(@Nonnull final String key) {
++		Preconditions.checkNotNull(key);
++		final ListTag list = getList(key, Tag.TAG_STRING);
++		final String[] result = new String[list.size()];
++		for (int i = 0; i < result.length; i++) {
++			result[i] = list.get(i) instanceof StringTag nbtString ? nbtString.getAsString() : "";
++		}
++		return result;
++	}
++	@Nonnull
++	public boolean[] getBooleanArray(@Nonnull final String key) {
++		Preconditions.checkNotNull(key);
++		final byte[] cache = getByteArray(Objects.requireNonNull(key));
++		final boolean[] result = new boolean[cache.length];
++		for (int i = 0; i < cache.length; i++) {
++			result[i] = cache[i] != 0;
++		}
++		return result;
++	}
++	// DeepState end
++
+     public byte[] getByteArray(String key) {
+         try {
+             if (this.contains(key, 7)) {
+@@ -306,6 +453,21 @@ public class CompoundTag implements Tag {
+         return new byte[0];
+     }
+ 
++    // DeepState start
++	@Nonnull
++	public short[] getShortArray(@Nonnull final String key) {
++		Preconditions.checkNotNull(key);
++		final ListTag list = getList(key, Tag.TAG_SHORT);
++		final short[] result = new short[list.size()];
++		for (int i = 0; i < result.length; i++) {
++			if (list.get(i) instanceof ShortTag nbtShort) {
++				result[i] = nbtShort.getAsShort();
++			}
++		}
++		return result;
++	}
++	// DeepState end
++
+     public int[] getIntArray(String key) {
+         try {
+             if (this.contains(key, 11)) {
+@@ -330,6 +492,39 @@ public class CompoundTag implements Tag {
+         return new long[0];
+     }
+ 
++    // DeepState start
++	@Nonnull
++	public float[] getFloatArray(@Nonnull final String key) {
++		Preconditions.checkNotNull(key);
++		final ListTag list = getList(key, Tag.TAG_FLOAT);
++		final float[] result = new float[list.size()];
++		for (int i = 0; i < result.length; i++) {
++			result[i] = list.getFloat(i);
++		}
++		return result;
++	}
++	@Nonnull
++	public double[] getDoubleArray(@Nonnull final String key) {
++		Preconditions.checkNotNull(key);
++		final ListTag list = getList(key, Tag.TAG_DOUBLE);
++		final double[] result = new double[list.size()];
++		for (int i = 0; i < result.length; i++) {
++			result[i] = list.getDouble(i);
++		}
++		return result;
++	}
++	@Nonnull
++	public UUID[] getUUIDArray(@Nonnull final String key) {
++		Preconditions.checkNotNull(key);
++		final ListTag list = getList(key, Tag.TAG_INT_ARRAY);
++		final UUID[] result = new UUID[list.size()];
++		for (int i = 0; i < result.length; i++) {
++			result[i] = NbtUtils.loadUUID(list.get(i));
++		}
++		return result;
++	}
++	// DeepState end
++
+     public CompoundTag getCompound(String key) {
+         try {
+             if (this.contains(key, 10)) {
+@@ -342,6 +537,19 @@ public class CompoundTag implements Tag {
+         return new CompoundTag();
+     }
+ 
++	// DeepState start
++	@Nonnull
++	public CompoundTag[] getCompoundArray(@Nonnull final String key) {
++		Preconditions.checkNotNull(key);
++		final ListTag list = getList(key, Tag.TAG_COMPOUND);
++		final CompoundTag[] result = new CompoundTag[list.size()];
++		for (int i = 0; i < result.length; i++) {
++			result[i] = list.getCompound(i);
++		}
++		return result;
++	}
++	// DeepState end
++
+     public ListTag getList(String key, int type) {
+         try {
+             if (this.getTagType(key) == 9) {
+diff --git a/src/main/java/net/minecraft/nbt/ListTag.java b/src/main/java/net/minecraft/nbt/ListTag.java
+index 88bac72edf19c578902f49d20353989ed4d96f8f..c078523e92baf703226a788b299e89ebb099b511 100644
+--- a/src/main/java/net/minecraft/nbt/ListTag.java
++++ b/src/main/java/net/minecraft/nbt/ListTag.java
+@@ -11,6 +11,9 @@ import java.io.IOException;
+ import java.util.Arrays;
+ import java.util.List;
+ import java.util.Objects;
++// DeepState start
++import javax.annotation.Nonnull;
++// DeepState end
+ 
+ public class ListTag extends CollectionTag<Tag> {
+     private static final int SELF_SIZE_IN_BITS = 296;
+@@ -53,8 +56,8 @@ public class ListTag extends CollectionTag<Tag> {
+     private final List<Tag> list;
+     private byte type;
+ 
+-    ListTag(List<Tag> list, byte type) {
+-        this.list = list;
++    public ListTag(@Nonnull List<Tag> list, byte type) { // DeepState - made public
++        this.list = Objects.requireNonNull(list);
+         this.type = type;
+     }
+ 
