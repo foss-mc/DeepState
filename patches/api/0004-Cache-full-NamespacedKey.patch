@@ -1,0 +1,61 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Alexander <protonull@protonmail.com>
+Date: Sat, 17 Jul 2021 11:30:43 +0100
+Subject: [PATCH] Cache full NamespacedKey
+
+
+diff --git a/src/main/java/org/bukkit/NamespacedKey.java b/src/main/java/org/bukkit/NamespacedKey.java
+index 01bcb3a1bdb5accdf844d0178cec3d25746b3eaa..47040e457786ca4b7ba561fa4771807cefd33cb8 100644
+--- a/src/main/java/org/bukkit/NamespacedKey.java
++++ b/src/main/java/org/bukkit/NamespacedKey.java
+@@ -37,6 +37,8 @@ public final class NamespacedKey implements net.kyori.adventure.key.Key, com.des
+     private final String namespace;
+     private final String key;
+ 
++    private final String fullKeyCache; // DeepState add key cache
++
+     /**
+      * Create a key in a specific namespace.
+      *
+@@ -54,6 +56,8 @@ public final class NamespacedKey implements net.kyori.adventure.key.Key, com.des
+ 
+         String string = toString();
+         Preconditions.checkArgument(string.length() < 256, "NamespacedKey must be less than 256 characters", string);
++
++        this.fullKeyCache = this.namespace + ':' + this.key; // DeepState add key cache
+     }
+ 
+     /**
+@@ -81,6 +85,8 @@ public final class NamespacedKey implements net.kyori.adventure.key.Key, com.des
+ 
+         String string = toString();
+         Preconditions.checkArgument(string.length() < 256, "NamespacedKey must be less than 256 characters (%s)", string);
++
++		this.fullKeyCache = this.namespace + ':' + this.key; // DeepState add key cache
+     }
+ 
+     @NotNull
+@@ -117,7 +123,10 @@ public final class NamespacedKey implements net.kyori.adventure.key.Key, com.des
+ 
+     @Override
+     public String toString() {
+-        return this.namespace + ":" + this.key;
++    	// DeepState start
++        //return this.namespace + ":" + this.key;
++		return this.fullKeyCache;
++		// DeepState end
+     }
+ 
+     /**
+@@ -231,7 +240,10 @@ public final class NamespacedKey implements net.kyori.adventure.key.Key, com.des
+     @NotNull
+     @Override
+     public String asString() {
+-        return this.namespace + ':' + this.key;
++		// DeepState start
++		//return this.namespace + ":" + this.key;
++		return this.fullKeyCache;
++		// DeepState end
+     }
+     // Paper end
+ }
