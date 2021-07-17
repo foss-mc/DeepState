@@ -1,0 +1,56 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Alexander <protonull@protonmail.com>
+Date: Sat, 17 Jul 2021 11:45:15 +0100
+Subject: [PATCH] Add CloseableHandler utility class
+
+
+diff --git a/src/main/java/io/protonull/deepstate/utilities/CloseableHandler.java b/src/main/java/io/protonull/deepstate/utilities/CloseableHandler.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..d3eee7cee8c2e630d7128085bbc8647b1c53f8f2
+--- /dev/null
++++ b/src/main/java/io/protonull/deepstate/utilities/CloseableHandler.java
+@@ -0,0 +1,44 @@
++package io.protonull.deepstate.utilities;
++
++import java.io.Closeable;
++import javax.annotation.Nonnull;
++import org.bukkit.inventory.ItemStack;
++import org.bukkit.inventory.meta.ItemMeta;
++
++public abstract class CloseableHandler<T> implements Closeable {
++
++	/**
++	 * @return Returns the context relevant to this handler.
++	 */
++	public abstract T get();
++
++	/**
++	 * Called when you're finished with the handler.
++	 */
++	@Override
++	public abstract void close();
++
++	/**
++	 * Example usage of CloseableHandler where the {@link ItemMeta} is used then saved afterwards.
++	 *
++	 * @param item The example item.
++	 * @return Returns the example CloseableHandler.
++	 *
++	 * @deprecated Don't actually use this, create your own.
++	 */
++	@Deprecated
++	public static CloseableHandler<ItemMeta> handleItemMeta(@Nonnull final ItemStack item) {
++		final var meta = item.getItemMeta();
++		return new CloseableHandler<>() {
++			@Override
++			public ItemMeta get() {
++				return meta;
++			}
++			@Override
++			public void close() {
++				item.setItemMeta(meta);
++			}
++		};
++	}
++
++}
