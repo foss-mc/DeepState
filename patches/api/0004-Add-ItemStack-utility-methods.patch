@@ -1,0 +1,80 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Alexander <protonull@protonmail.com>
+Date: Sat, 17 Jul 2021 01:04:10 +0100
+Subject: [PATCH] Add ItemStack utility methods
+
+
+diff --git a/src/main/java/io/protonull/deepstate/utilities/ClosableHandler.java b/src/main/java/io/protonull/deepstate/utilities/ClosableHandler.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..d12554fd853a6185c664fca35118366495866208
+--- /dev/null
++++ b/src/main/java/io/protonull/deepstate/utilities/ClosableHandler.java
+@@ -0,0 +1,12 @@
++package io.protonull.deepstate.utilities;
++
++import java.io.Closeable;
++
++public abstract class ClosableHandler<T> implements Closeable {
++
++	public abstract T get();
++
++	@Override
++	public abstract void close();
++
++}
+diff --git a/src/main/java/org/bukkit/inventory/ItemStack.java b/src/main/java/org/bukkit/inventory/ItemStack.java
+index a7909406e9d54c1ab4789b984ed6b1da50837fce..8fd3e1a6e8223ef49f7dcfee63c7e4fb86c429e1 100644
+--- a/src/main/java/org/bukkit/inventory/ItemStack.java
++++ b/src/main/java/org/bukkit/inventory/ItemStack.java
+@@ -17,6 +17,10 @@ import org.bukkit.inventory.meta.ItemMeta;
+ import org.bukkit.material.MaterialData;
+ import org.jetbrains.annotations.NotNull;
+ import org.jetbrains.annotations.Nullable;
++// DeepState start
++import io.protonull.deepstate.utilities.ClosableHandler;
++import org.bukkit.persistence.PersistentDataContainer;
++// DeepState end
+ 
+ /**
+  * Represents a stack of items.
+@@ -921,4 +925,40 @@ public class ItemStack implements Cloneable, ConfigurationSerializable, net.kyor
+         return Bukkit.getUnsafe().isValidRepairItemStack(toBeRepaired, this);
+     }
+     // Paper end
++
++    // DeepState start
++    public ClosableHandler<ItemMeta> handleItemMeta() {
++        final var meta = getItemMeta();
++        final var initialMetaHash = meta.hashCode();
++        return new ClosableHandler<>() {
++            @Override
++            public ItemMeta get() {
++                return meta;
++            }
++            @Override
++            public void close() {
++                if (meta.hashCode() != initialMetaHash) {
++                    setItemMeta(meta);
++                }
++            }
++        };
++    }
++    public ClosableHandler<PersistentDataContainer> getPersistentDataContainer() {
++        final var meta = getItemMeta();
++        final var initialMetaHash = meta.hashCode();
++        return new ClosableHandler<>() {
++            @Override
++            public PersistentDataContainer get() {
++                return meta.getPersistentDataContainer();
++            }
++            @Override
++            public void close() {
++                if (meta.hashCode() != initialMetaHash) {
++                    setItemMeta(meta);
++                }
++            }
++        };
++    }
++    // DeepState end
++
+ }
