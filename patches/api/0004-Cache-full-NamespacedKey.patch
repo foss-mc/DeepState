@@ -5,7 +5,7 @@ Subject: [PATCH] Cache full NamespacedKey
 
 
 diff --git a/src/main/java/org/bukkit/NamespacedKey.java b/src/main/java/org/bukkit/NamespacedKey.java
-index 01bcb3a1bdb5accdf844d0178cec3d25746b3eaa..2f0feaa476dc7dc87b5eb00c66a650c6250a0865 100644
+index 01bcb3a1bdb5accdf844d0178cec3d25746b3eaa..acf9ca2cd936b9651f297b60f0d9af7aef385941 100644
 --- a/src/main/java/org/bukkit/NamespacedKey.java
 +++ b/src/main/java/org/bukkit/NamespacedKey.java
 @@ -37,6 +37,8 @@ public final class NamespacedKey implements net.kyori.adventure.key.Key, com.des
@@ -21,7 +21,7 @@ index 01bcb3a1bdb5accdf844d0178cec3d25746b3eaa..2f0feaa476dc7dc87b5eb00c66a650c6
          this.namespace = namespace;
          this.key = key;
  
-+		this.fullKeyCache = this.namespace + ':' + this.key; // DeepState add key cache
++        this.fullKeyCache = this.namespace + ':' + this.key; // DeepState add key cache
 +
          String string = toString();
          Preconditions.checkArgument(string.length() < 256, "NamespacedKey must be less than 256 characters", string);
@@ -30,7 +30,7 @@ index 01bcb3a1bdb5accdf844d0178cec3d25746b3eaa..2f0feaa476dc7dc87b5eb00c66a650c6
          this.namespace = plugin.getName().toLowerCase(Locale.ROOT);
          this.key = key.toLowerCase(Locale.ROOT);
  
-+		this.fullKeyCache = this.namespace + ':' + this.key; // DeepState add key cache
++        this.fullKeyCache = this.namespace + ':' + this.key; // DeepState add key cache
 +
          // Check validity after normalization
          Preconditions.checkArgument(VALID_NAMESPACE.matcher(this.namespace).matches(), "Invalid namespace. Must be [a-z0-9._-]: %s", this.namespace);
