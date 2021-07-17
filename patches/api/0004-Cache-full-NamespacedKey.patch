@@ -5,7 +5,7 @@ Subject: [PATCH] Cache full NamespacedKey
 
 
 diff --git a/src/main/java/org/bukkit/NamespacedKey.java b/src/main/java/org/bukkit/NamespacedKey.java
-index 01bcb3a1bdb5accdf844d0178cec3d25746b3eaa..9ced24070cdf172521fc5fa82cf4cb57d4202231 100644
+index 01bcb3a1bdb5accdf844d0178cec3d25746b3eaa..2f0feaa476dc7dc87b5eb00c66a650c6250a0865 100644
 --- a/src/main/java/org/bukkit/NamespacedKey.java
 +++ b/src/main/java/org/bukkit/NamespacedKey.java
 @@ -37,6 +37,8 @@ public final class NamespacedKey implements net.kyori.adventure.key.Key, com.des
@@ -17,45 +17,39 @@ index 01bcb3a1bdb5accdf844d0178cec3d25746b3eaa..9ced24070cdf172521fc5fa82cf4cb57
      /**
       * Create a key in a specific namespace.
       *
-@@ -54,6 +56,8 @@ public final class NamespacedKey implements net.kyori.adventure.key.Key, com.des
+@@ -52,6 +54,8 @@ public final class NamespacedKey implements net.kyori.adventure.key.Key, com.des
+         this.namespace = namespace;
+         this.key = key;
  
++		this.fullKeyCache = this.namespace + ':' + this.key; // DeepState add key cache
++
          String string = toString();
          Preconditions.checkArgument(string.length() < 256, "NamespacedKey must be less than 256 characters", string);
-+
-+        this.fullKeyCache = this.namespace + ':' + this.key; // DeepState add key cache
      }
+@@ -75,6 +79,8 @@ public final class NamespacedKey implements net.kyori.adventure.key.Key, com.des
+         this.namespace = plugin.getName().toLowerCase(Locale.ROOT);
+         this.key = key.toLowerCase(Locale.ROOT);
  
-     /**
-@@ -81,6 +85,8 @@ public final class NamespacedKey implements net.kyori.adventure.key.Key, com.des
- 
-         String string = toString();
-         Preconditions.checkArgument(string.length() < 256, "NamespacedKey must be less than 256 characters (%s)", string);
++		this.fullKeyCache = this.namespace + ':' + this.key; // DeepState add key cache
 +
-+        this.fullKeyCache = this.namespace + ':' + this.key; // DeepState add key cache
-     }
- 
-     @NotNull
-@@ -117,7 +123,10 @@ public final class NamespacedKey implements net.kyori.adventure.key.Key, com.des
+         // Check validity after normalization
+         Preconditions.checkArgument(VALID_NAMESPACE.matcher(this.namespace).matches(), "Invalid namespace. Must be [a-z0-9._-]: %s", this.namespace);
+         Preconditions.checkArgument(VALID_KEY.matcher(this.key).matches(), "Invalid key. Must be [a-z0-9/._-]: %s", this.key);
+@@ -117,7 +123,7 @@ public final class NamespacedKey implements net.kyori.adventure.key.Key, com.des
  
      @Override
      public String toString() {
 -        return this.namespace + ":" + this.key;
-+        // DeepState start
-+        //return this.namespace + ":" + this.key;
-+        return this.fullKeyCache;
-+        // DeepState end
++        return this.fullKeyCache; //this.namespace + ":" + this.key; // DeepState
      }
  
      /**
-@@ -231,7 +240,10 @@ public final class NamespacedKey implements net.kyori.adventure.key.Key, com.des
+@@ -231,7 +237,7 @@ public final class NamespacedKey implements net.kyori.adventure.key.Key, com.des
      @NotNull
      @Override
      public String asString() {
 -        return this.namespace + ':' + this.key;
-+        // DeepState start
-+        //return this.namespace + ":" + this.key;
-+        return this.fullKeyCache;
-+        // DeepState end
++        return this.fullKeyCache; //this.namespace + ":" + this.key; // DeepState
      }
      // Paper end
  }
