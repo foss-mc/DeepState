@@ -1,0 +1,24 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Alexander <protonull@protonmail.com>
+Date: Fri, 23 Jul 2021 22:31:39 +0100
+Subject: [PATCH] Add lombok
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 7ad3e5153718f6d4ce8293a9790bc3c1158aeb8e..d89ce95abcc89521f810a0b583896c458fdc4fea 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -42,6 +42,13 @@ dependencies {
+     testImplementation("junit:junit:4.13.1")
+     testImplementation("org.hamcrest:hamcrest-library:1.3")
+     testImplementation("org.ow2.asm:asm-tree:9.1")
++
++    // DeepState start - add lombok
++    compileOnly("org.projectlombok:lombok:1.18.20")
++    annotationProcessor("org.projectlombok:lombok:1.18.20")
++    testCompileOnly("org.projectlombok:lombok:1.18.20")
++    testAnnotationProcessor("org.projectlombok:lombok:1.18.20")
++    // DeepState end - add lombok
+ }
+ 
+ configure<PublishingExtension> {

@@ -1,0 +1,24 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Alexander <protonull@protonmail.com>
+Date: Fri, 23 Jul 2021 22:31:48 +0100
+Subject: [PATCH] Add lombok
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 9ff4623c947ea4bfcf440859ef774b7deb8190e5..1c61e27cfe2a182e878b84fac58c9635ee792f51 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -73,6 +73,13 @@ dependencies {
+     testImplementation("io.github.classgraph:classgraph:4.8.47") // Paper - mob goal test
+     testImplementation("junit:junit:4.13.1")
+     testImplementation("org.hamcrest:hamcrest-library:1.3")
++
++    // DeepState start - add lombok
++    compileOnly("org.projectlombok:lombok:1.18.20")
++    annotationProcessor("org.projectlombok:lombok:1.18.20")
++    testCompileOnly("org.projectlombok:lombok:1.18.20")
++    testAnnotationProcessor("org.projectlombok:lombok:1.18.20")
++    // DeepState end - add lombok
+ }
+ 
+ tasks.jar {
