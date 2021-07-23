@@ -7,10 +7,14 @@ plugins {
 repositories {
     mavenCentral()
     maven("https://papermc.io/repo/repository/maven-public/") {
-        content { onlyForConfigurations("paperclip") }
+        content {
+            onlyForConfigurations("paperclip")
+        }
     }
     maven("https://maven.quiltmc.org/repository/release/") {
-        content { onlyForConfigurations("remapper") }
+        content {
+            onlyForConfigurations("remapper")
+        }
     }
 }
 
@@ -23,9 +27,9 @@ subprojects {
     apply(plugin = "java")
 
     java {
-		toolchain {
-			languageVersion.set(JavaLanguageVersion.of(16))
-		}
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(16))
+        }
     }
 
     tasks.withType<JavaCompile>().configureEach {
@@ -55,11 +59,11 @@ paperweight {
         withStandardPatcher {
             baseName("Tuinity")
 
-			apiPatchDir.set(layout.projectDirectory.dir("patches/api"))
-			apiOutputDir.set(layout.projectDirectory.dir("DeepState-API"))
+            apiPatchDir.set(layout.projectDirectory.dir("patches/api"))
+            apiOutputDir.set(layout.projectDirectory.dir("DeepState-API"))
 
-			serverPatchDir.set(layout.projectDirectory.dir("patches/server"))
-			serverOutputDir.set(layout.projectDirectory.dir("DeepState-Server"))
+            serverPatchDir.set(layout.projectDirectory.dir("patches/server"))
+            serverOutputDir.set(layout.projectDirectory.dir("DeepState-Server"))
         }
     }
 }
