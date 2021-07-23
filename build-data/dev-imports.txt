@@ -13,3 +13,17 @@ authlib com.mojang.authlib.GameProfile
 
 minecraft net.minecraft.world.item.alchemy.PotionBrewing
 minecraft net.minecraft.world.item.alchemy.PotionUtils
+
+# Fixing Date Index Exception:
+# java.lang.ArrayIndexOutOfBoundsException: Index -6 out of bounds for length 13
+#     at sun.util.calendar.BaseCalendar.getCalendarDateFromFixedDate(BaseCalendar.java:453) ~[?:?]
+#     at java.util.GregorianCalendar.computeFields(GregorianCalendar.java:2394) ~[?:?]
+#     at java.util.GregorianCalendar.computeTime(GregorianCalendar.java:2815) ~[?:?]
+#     at java.util.Calendar.updateTime(Calendar.java:3428) ~[?:?]
+#     at java.util.Calendar.complete(Calendar.java:2298) ~[?:?]
+#     at java.util.Calendar.get(Calendar.java:1856) ~[?:?]
+#     at java.text.SimpleDateFormat.subFormat(SimpleDateFormat.java:1150) ~[?:?]
+#     at java.text.SimpleDateFormat.format(SimpleDateFormat.java:997) ~[?:?]
+#     at java.text.SimpleDateFormat.format(SimpleDateFormat.java:967) ~[?:?]
+#     at java.text.DateFormat.format(DateFormat.java:374) ~[?:?]
+minecraft net.minecraft.advancements.CriterionProgress

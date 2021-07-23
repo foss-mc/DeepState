@@ -1,0 +1,37 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Alexander <protonull@protonmail.com>
+Date: Fri, 23 Jul 2021 22:40:00 +0100
+Subject: [PATCH] Attempt ArrayIndexOutOfBoundsException fix with
+ synchronisation
+
+
+diff --git a/src/main/java/net/minecraft/advancements/CriterionProgress.java b/src/main/java/net/minecraft/advancements/CriterionProgress.java
+index 322f0fd9eff00085c2e9765395c7dcdef8bc9e12..89776014fff0cdea74b48f2c6587c48236b83a29 100644
+--- a/src/main/java/net/minecraft/advancements/CriterionProgress.java
++++ b/src/main/java/net/minecraft/advancements/CriterionProgress.java
+@@ -8,6 +8,9 @@ import java.text.ParseException;
+ import java.text.SimpleDateFormat;
+ import java.util.Date;
+ import net.minecraft.network.FriendlyByteBuf;
++// DeepState start
++import lombok.Synchronized;
++// DeepState end
+ 
+ public class CriterionProgress {
+     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+@@ -42,6 +45,7 @@ public class CriterionProgress {
+ 
+     }
+ 
++    @Synchronized // DeepState - add synchronisation for DATE_FORMAT usage
+     public JsonElement serializeToJson() {
+         return (JsonElement)(this.obtained != null ? new JsonPrimitive(DATE_FORMAT.format(this.obtained)) : JsonNull.INSTANCE);
+     }
+@@ -55,6 +59,7 @@ public class CriterionProgress {
+         return criterionProgress;
+     }
+ 
++    @Synchronized // DeepState - add synchronisation for DATE_FORMAT usage
+     public static CriterionProgress fromJson(String datetime) {
+         CriterionProgress criterionProgress = new CriterionProgress();
+ 
