@@ -9,8 +9,7 @@
 #     minecraft net.minecraft.world.level.entity.LevelEntityGetterAdapter
 #     minecraft net/minecraft/world/level/entity/LevelEntityGetter.java
 
-authlib com.mojang.authlib.GameProfile
-
+# Add Custom Brewing Capabilities
 minecraft net.minecraft.world.item.alchemy.PotionBrewing
 minecraft net.minecraft.world.item.alchemy.PotionUtils
 

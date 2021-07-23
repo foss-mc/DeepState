@@ -1,9 +1,6 @@
 DeepState-API
 DeepState-Server
-Tuinity/
 run/
-
-launcher-deepstate.jar
 
 # Created by https://www.toptal.com/developers/gitignore/api/java,linux,macos,gradle,eclipse,windows,intellij+all
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,linux,macos,gradle,eclipse,windows,intellij+all
